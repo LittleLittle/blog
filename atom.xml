@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[Magic World]]></title>
+  
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://blog.jianjunzhu.com/"/>
+  <updated>2015-08-20T13:26:14.662Z</updated>
+  <id>http://blog.jianjunzhu.com/</id>
+  
+  <author>
+    <name><![CDATA[Jianjun Zhu]]></name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[First Post]]></title>
+    <link href="http://blog.jianjunzhu.com/2015/08/20/first-post/"/>
+    <id>http://blog.jianjunzhu.com/2015/08/20/first-post/</id>
+    <published>2015-08-20T14:18:07.012Z</published>
+    <updated>2015-08-20T13:26:14.662Z</updated>
+    <content type="html"><![CDATA[<p>This is the first post of this blog.</p>
+<p>More info about me: <a href="http://me.jianjunzhu.com/" target="_blank" rel="external">ME</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>This is the first post of this blog.</p>
+<p>More info about me: <a href="http://me.jianjunzhu.com/" target="_blank" rel="external">ME</a>]]>
+    </summary>
+    
+  </entry>
+  
+</feed>
