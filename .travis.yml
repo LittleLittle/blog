@@ -1,8 +1,16 @@
 language: node_js
 node_js:
-  - "6"
+  - '6'
 before_install:
   - npm install -g hexo hexo-cli
   - npm install
+  - git config user.name 'MagicBot'
+  - git config user.email 'magic.z@outlook.com'
+  - sed -i'' "s~git@github.com:magic07/blog.git~https://${GH_TOKEN}:x-oauth-basic@github.com/magic07/blog.git~" _config.yml
 install:
   - hexo generate
+script:
+  - hexo deploy --silent
+env:
+  global:
+    secure: o9pKjX0CSNB9N5QnW3FI7aHEikBOV5hu5kste3C6AIblqEB90J4cXtC1yx854vh+xvUF9sx4VHR1ZYQcKpHa1hFLzNF6xvYlbW9rqHIfJRk4ft2bWdoYuYZunyaow64L8FVbUXqJ7yEZ37Erm9G98kFfEkTdSxDXdcuRHc3VOUNfDceyGJCb1pSoYmpou6t5PXOp+IJloIiOCdcSl5PxcO1NryNjVcX44Nka0jDGVUckG5o0+FhcIa3Me0P7orHmiXUngLL3GjNB4juP1bb4bCYPlvH6osLDB8PzzD8ZKhR5N2uANsSLv4GGTrR5HzQVaw9w5GLrfohz5H6fl6f8gTmfuSeHDNvZqUEk63MvKT1zIagygnQaRaC+r+KO+5p+SquIenXh0aaI668myFq034pB3TSe+GPed35N4cBc3WvCWavg1Nvq6L+Whc8Wltr70UQAFx4dON6o/15sbCSc0NS401NLnqILkRu4/ScQ4E1o38LFqJVd/hU7+zUQRmq6X6o0dtW2GQCzGNaMLN9xAbk/1G6vzxf5jWlAbOQ2aJrjBIeJHD4ms+I9QS2PJgGJUhhlPsnwhmsh1YU8AK/WoLmBEKeO0EWn+1/ipGO5C2zzkFl5X7CamfUEj6CC3fbR6xY/SvLbIjDxTWeBiz1cmVk9joTtFcrO8ofk6IvP24c=
