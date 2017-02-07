@@ -5,8 +5,8 @@ before_install:
   - npm install -g hexo hexo-cli
   - npm install
   - npm install --save hexo-deployer-git
-  - git config user.name 'MagicBot'
-  - git config user.email 'magic.z@outlook.com'
+  - git config --global user.name 'MagicBot'
+  - git config --global user.email 'magic.z@outlook.com'
   - sed -i'' "s~git@github.com:magic07/blog.git~https://${GH_TOKEN}:x-oauth-basic@github.com/magic07/blog.git~" _config.yml
 install:
   - hexo generate
