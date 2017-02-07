@@ -69,4 +69,5 @@ theme: tranquilpeak
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:littlelittle/blog
+  repo: git@github.com:magic07/blog.git
+  branch: gh-pages
