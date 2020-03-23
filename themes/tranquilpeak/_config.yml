@@ -56,7 +56,7 @@ sidebar:
     author_links:
         github:
             title: global.github
-            url: https://github.com/LittleLittle
+            url: https://github.com/jianjunz
             icon: github
         # stack_overflow:
         #     title: global.stack_overflow
@@ -80,7 +80,7 @@ sidebar:
             icon: linkedin
         mail:
             title: global.mail
-            url: mailto:magicdream07@gmail.com
+            url: mailto:magic.z@outlook.com
             icon: envelope-o
     rss:
         rss:
