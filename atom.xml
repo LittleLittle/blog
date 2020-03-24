@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Magic World</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://blog.jianjunzhu.com/"/>
+  <updated>2020-03-23T14:50:21.087Z</updated>
+  <id>http://blog.jianjunzhu.com/</id>
+  
+  <author>
+    <name>Jianjun Zhu</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Playing with WebTransport</title>
+    <link href="http://blog.jianjunzhu.com/2020/03/23/playing-with-webtransport/"/>
+    <id>http://blog.jianjunzhu.com/2020/03/23/playing-with-webtransport/</id>
+    <published>2020-03-23T14:50:10.000Z</published>
+    <updated>2020-03-23T14:50:21.087Z</updated>
+    
+    <content type="html"><![CDATA[<p>This post describes how to try <a href="https://wicg.github.io/web-transport/" target="_blank" rel="noopener">WebTransport</a> (QuicTransport) in Chrome Canary with a sample server provided in Chromium.</p><h2 id="Build-QUIC-transport-simple-server"><a href="#Build-QUIC-transport-simple-server" class="headerlink" title="Build QUIC transport simple server."></a>Build QUIC transport simple server.</h2><p>QUIC transport simple server is provided in Chromium as a sample server for <code>QuicTransport</code>. After getting Chromium’s code, you can build its binary by</p><figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ninja -C <span class="keyword">out</span>/<span class="keyword">debug</span> quic_transport_simple_server</span><br></pre></td></tr></table></figure><h2 id="Prepare-certificates"><a href="#Prepare-certificates" class="headerlink" title="Prepare certificates"></a>Prepare certificates</h2><p>You need a valid certificate and a pkcs8 format key to run the server. Handshake fails if your certificate is invalid or not trusted.</p><p>The script in <code>net/tools/quic/certs</code> could help you to generate a certificate/key pair for you, but you may need to correctly configure CN, SAN to match your hostname. Root CA should be trusted by Chrome.</p><h2 id="Run-the-server"><a href="#Run-the-server" class="headerlink" title="Run the server"></a>Run the server</h2><p>Run server with certificate and key.</p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">out/debug/quic_transport_simple_server <span class="attribute">--certificate_file</span>=&lt;certificate.pem&gt; <span class="attribute">--key_file</span>=&lt;key.pkcs8&gt; <span class="attribute">--port</span>=&lt;port&gt;</span><br></pre></td></tr></table></figure><h2 id="Run-Chrome"><a href="#Run-Chrome" class="headerlink" title="Run Chrome"></a>Run Chrome</h2><p>Run Chrome with a couple of flags</p><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">Chrome</span> --<span class="comment">enable</span><span class="literal">-</span><span class="comment">experimental</span><span class="literal">-</span><span class="comment">web</span><span class="literal">-</span><span class="comment">platform</span><span class="literal">-</span><span class="comment">features</span> --<span class="comment">enable</span><span class="literal">-</span><span class="comment">quic</span> --<span class="comment">quic</span><span class="literal">-</span><span class="comment">version=h3</span><span class="literal">-</span><span class="comment">25</span> --<span class="comment">origin</span><span class="literal">-</span><span class="comment">to</span><span class="literal">-</span><span class="comment">force</span><span class="literal">-</span><span class="comment">quic</span><span class="literal">-</span><span class="comment">on=</span>&lt;<span class="comment">hostname:port</span>&gt;</span><br></pre></td></tr></table></figure><p>My observation is <a href="https://chromium.googlesource.com/chromium/src/net/+/8efd409806c64c06fa11b1d6b8a16c6590d4727b/quic/quic_transport_client.cc#137" target="_blank" rel="noopener">QuicTransport client</a> only supports TLS 1.3 as handshake protocol and draft-ietf-quic-transport-25 as transport protocol, so <code>--quic-version=h3-25</code> is required. <code>--origin-to-force-quic-on</code> flag <a href="https://chromium.googlesource.com/chromium/src/net/+/8efd409806c64c06fa11b1d6b8a16c6590d4727b/quic/crypto/proof_verifier_chromium.cc#395" target="_blank" rel="noopener">allows unknown root</a> for your origin. WebTransport is still an experimental feature, so you need <code>--enable-experimental-web-platform-features</code> to enable it.</p><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul><li>WebTransport: <a href="https://wicg.github.io/web-transport/" target="_blank" rel="noopener">https://wicg.github.io/web-transport/</a></li><li>The WebTransport Protocol Framework: <a href="https://tools.ietf.org/html/draft-vvv-webtransport-overview" target="_blank" rel="noopener">https://tools.ietf.org/html/draft-vvv-webtransport-overview</a></li><li>WebTransport over QUIC: <a href="https://tools.ietf.org/html/draft-vvv-webtransport-quic" target="_blank" rel="noopener">https://tools.ietf.org/html/draft-vvv-webtransport-quic</a></li><li>QuicTransport tracking bug: <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1011392" target="_blank" rel="noopener">https://bugs.chromium.org/p/chromium/issues/detail?id=1011392</a></li><li>Playing with QUIC: <a href="https://www.chromium.org/quic/playing-with-quic" target="_blank" rel="noopener">https://www.chromium.org/quic/playing-with-quic</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;This post describes how to try &lt;a href=&quot;https://wicg.github.io/web-transport/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;WebTransport&lt;/a&gt; (QuicTrans
+      
+    
+    </summary>
+    
+    
+      <category term="WebTransport" scheme="http://blog.jianjunzhu.com/tags/WebTransport/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Function Scope v.s. Block Scope</title>
+    <link href="http://blog.jianjunzhu.com/2017/02/05/function-scope-vs-block-scope/"/>
+    <id>http://blog.jianjunzhu.com/2017/02/05/function-scope-vs-block-scope/</id>
+    <published>2017-02-05T08:42:50.000Z</published>
+    <updated>2020-03-23T14:43:36.400Z</updated>
+    
+    <content type="html"><![CDATA[<p>ES2015(aka ES6) introduced a new keyword <code>let</code> that declares a new variable in block scope. Before that, most JavaScript variables are function scope or global scope.</p><h1 id="Function-Scope"><a href="#Function-Scope" class="headerlink" title="Function Scope"></a>Function Scope</h1><p>Following example shows the scope of variable <code>num</code> declared by <code>var</code>.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">var</span> num = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(num);  <span class="comment">// 1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(num);  <span class="comment">// 1. Same variable as defined in &#123;&#125;.</span></span><br><span class="line">&#125;());</span><br></pre></td></tr></table></figure></p><h1 id="Block-Scope"><a href="#Block-Scope" class="headerlink" title="Block Scope"></a>Block Scope</h1><p>Following example shows the scope of variable <code>num</code> declared by <code>let</code>.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">let</span> num = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(num);  <span class="comment">// 1</span></span><br><span class="line">  &#125;  <span class="comment">// num goes out of scope.</span></span><br><span class="line">  <span class="built_in">console</span>.log(num);  <span class="comment">// ReferenceError: num is not defined.</span></span><br><span class="line">&#125;());</span><br></pre></td></tr></table></figure></p><h1 id="Hoisting"><a href="#Hoisting" class="headerlink" title="Hoisting"></a>Hoisting</h1><p>Variables declared by <code>var</code> are hoisted.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(num);  <span class="comment">// undefined</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">var</span> num = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(num);  <span class="comment">// 1</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;());</span><br></pre></td></tr></table></figure></p><p>Variables declared by <code>let</code> are not hoisted.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(num);  <span class="comment">// ReferenceError: num is not defined.</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">let</span> num = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(num);  <span class="comment">// 1</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;());</span><br></pre></td></tr></table></figure></p><h1 id="Block-Scope-Before-ES2015"><a href="#Block-Scope-Before-ES2015" class="headerlink" title="Block Scope Before ES2015"></a>Block Scope Before ES2015</h1><p>Variables declared in the <code>catch</code> clause of <code>try...catch</code> statement is block scoped.</p><h1 id="Useful-Links"><a href="#Useful-Links" class="headerlink" title="Useful Links"></a>Useful Links</h1><ul><li><a href="https://github.com/getify/You-Dont-Know-JS/blob/master/scope%20%26%20closures/ch3.md" target="_blank" rel="noopener">You Don’t Know JS: Scope &amp; Closures</a>.</li><li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let" target="_blank" rel="noopener">MDN: let statement</a>.</li><li><a href="https://rainsoft.io/variables-lifecycle-and-why-let-is-not-hoisted/" target="_blank" rel="noopener">JavaScript variables lifecycle: why let is not hoisted</a>.</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;ES2015(aka ES6) introduced a new keyword &lt;code&gt;let&lt;/code&gt; that declares a new variable in block scope. Before that, most JavaScript varia
+      
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://blog.jianjunzhu.com/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>First Post</title>
+    <link href="http://blog.jianjunzhu.com/2015/08/20/first-post/"/>
+    <id>http://blog.jianjunzhu.com/2015/08/20/first-post/</id>
+    <published>2015-08-20T05:26:14.000Z</published>
+    <updated>2020-03-23T14:43:36.400Z</updated>
+    
+    <content type="html"><![CDATA[<p>This is the first post of this blog.</p><p>More info about me: <a href="http://me.jianjunzhu.com/" target="_blank" rel="noopener">ME</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;This is the first post of this blog.&lt;/p&gt;
+&lt;p&gt;More info about me: &lt;a href=&quot;http://me.jianjunzhu.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ME&lt;/a&gt;
+      
+    
+    </summary>
+    
+    
+      <category term="JavaScript" scheme="http://blog.jianjunzhu.com/tags/JavaScript/"/>
+    
+  </entry>
+  
+</feed>
